@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.vscode/
+chroma_db/
+data/sample_reports/*
+data/evaluation/*
+.DS_Store
+Thumbs.db
