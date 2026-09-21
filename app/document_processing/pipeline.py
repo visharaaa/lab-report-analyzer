@@ -3,6 +3,7 @@ High-level pipeline for processing laboratory report files.
 """
 
 from pathlib import Path
+from app.normalization.normalize_results import normalize_results
 
 from app.document_processing.document_reader import (
     read_text_file,
@@ -49,3 +50,5 @@ def process_report(file_path: str | Path) -> list[LabResult]:
         )
 
     return extract_results(text)
+
+    return normalize_results(results)

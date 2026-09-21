@@ -18,6 +18,9 @@ def test_process_text_report():
     assert results_by_name["hemoglobin"].value == 11.2
     assert results_by_name["hemoglobin"].flag == "low"
 
+    assert results_by_name["hemoglobin"].test_name == "Hemoglobin"
+    assert results_by_name["hemoglobin"].canonical_name == "hemoglobin"
+
     assert results_by_name["fasting_blood_glucose"].value == 108.0
     assert results_by_name["fasting_blood_glucose"].flag == "high"
 
