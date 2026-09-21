@@ -5,6 +5,7 @@ import pytest
 from app.document_processing.document_reader import (
     read_text_file,
     read_pdf_file,
+    read_image_file,
 )
 
 def test_read_text_file():
@@ -44,3 +45,25 @@ def test_read_pdf_file(tmp_path):
 
     assert "COMPLETE BLOOD COUNT" in text
     assert "Hemoglobin 11.2 g/dL" in text
+
+def test_read_image_file(tmp_path):
+    from PIL import Image, ImageDraw
+
+    image_path = tmp_path / "sample_report.png"
+
+    image = Image.new("RGB", (800, 200), "white")
+    draw = ImageDraw.Draw(image)
+
+    draw.text(
+        (20, 20),
+        "COMPLETE BLOOD COUNT\nHemoglobin 11.2 g/dL",
+        fill="black",
+    )
+
+    image.save(image_path)
+
+    text = read_image_file(image_path)
+
+    assert "COMPLETE BLOOD COUNT" in text
+    assert "Hemoglobin" in text
+    assert "11.2" in text

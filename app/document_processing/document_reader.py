@@ -3,7 +3,14 @@ Utilities for reading laboratory report documents.
 """
 
 from pathlib import Path
+
 import pymupdf
+import pytesseract
+from PIL import Image
+
+pytesseract.pytesseract.tesseract_cmd = (
+    r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+)
 
 def read_text_file(file_path: str | Path) -> str:
     """
@@ -28,3 +35,14 @@ def read_pdf_file(file_path: str | Path) -> str:
             text += page.get_text()
 
     return text
+
+def read_image_file(file_path: str | Path) -> str:
+    """
+    Extract text from an image-based laboratory report using OCR.
+    """
+
+    path = Path(file_path)
+
+    image = Image.open(path)
+
+    return pytesseract.image_to_string(image)
