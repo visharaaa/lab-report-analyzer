@@ -6,6 +6,7 @@ from app.document_processing.document_reader import (
     read_text_file,
     read_pdf_file,
     read_image_file,
+    read_scanned_pdf_file,
 )
 
 def test_read_text_file():
@@ -63,6 +64,44 @@ def test_read_image_file(tmp_path):
     image.save(image_path)
 
     text = read_image_file(image_path)
+
+    assert "COMPLETE BLOOD COUNT" in text
+    assert "Hemoglobin" in text
+    assert "11.2" in text
+
+def test_read_scanned_pdf_file(tmp_path):
+    import pymupdf
+    from PIL import Image, ImageDraw
+
+    pdf_path = tmp_path / "scanned_report.pdf"
+    image_path = tmp_path / "scanned_page.png"
+
+    # Create an image containing laboratory report text.
+    image = Image.new("RGB", (1200, 400), "white")
+    draw = ImageDraw.Draw(image)
+
+    draw.text(
+        (50, 50),
+        "COMPLETE BLOOD COUNT\nHemoglobin 11.2 g/dL",
+        fill="black",
+    )
+
+    image.save(image_path)
+
+    # Create a PDF containing the image as a scanned page.
+    document = pymupdf.open()
+    page = document.new_page(width=1200, height=400)
+
+    page.insert_image(
+        page.rect,
+        filename=str(image_path),
+    )
+
+    document.save(pdf_path)
+    document.close()
+
+    # Read the scanned PDF using OCR.
+    text = read_scanned_pdf_file(pdf_path)
 
     assert "COMPLETE BLOOD COUNT" in text
     assert "Hemoglobin" in text

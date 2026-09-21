@@ -36,6 +36,29 @@ def read_pdf_file(file_path: str | Path) -> str:
 
     return text
 
+def read_scanned_pdf_file(file_path: str | Path) -> str:
+    """
+    Extract text from a scanned PDF by rendering each page
+    as an image and applying OCR.
+    """
+
+    path = Path(file_path)
+
+    text = ""
+
+    with pymupdf.open(path) as document:
+        for page in document:
+            pixmap = page.get_pixmap()
+            image = Image.frombytes(
+                "RGB",
+                [pixmap.width, pixmap.height],
+                pixmap.samples,
+            )
+
+            text += pytesseract.image_to_string(image)
+
+    return text
+
 def read_image_file(file_path: str | Path) -> str:
     """
     Extract text from an image-based laboratory report using OCR.
