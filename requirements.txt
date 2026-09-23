@@ -6,3 +6,4 @@ pandas
 numpypip 
 pymupdf
 pytesseract
+sentence-transformers
