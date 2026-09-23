@@ -71,3 +71,29 @@ def retrieve_for_result(
         persist_directory=persist_directory,
         n_results=n_results,
     )
+
+def retrieve_for_report(
+    results: list[LabResult],
+    persist_directory: str = "data/chroma",
+    n_results: int = 3,
+) -> dict[str, list[dict]]:
+    """
+    Retrieve relevant medical knowledge for abnormal
+    laboratory results in a report.
+    """
+
+    retrieved = {}
+
+    for result in results:
+        if result.flag not in {"low", "high"}:
+            continue
+
+        key = result.canonical_name or result.test_name
+
+        retrieved[key] = retrieve_for_result(
+            result,
+            persist_directory=persist_directory,
+            n_results=n_results,
+        )
+
+    return retrieved
