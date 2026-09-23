@@ -2,6 +2,7 @@
 Utilities for retrieving relevant medical knowledge.
 """
 
+from app.models.schemas import LabResult
 from app.rag.embeddings import (
     generate_embeddings,
     load_embedding_model,
@@ -35,5 +36,38 @@ def retrieve_knowledge(
     return search_documents(
         collection,
         query_embedding,
+        n_results=n_results,
+    )
+
+
+def build_result_query(result: LabResult) -> str:
+    """
+    Build a semantic retrieval query from a laboratory result.
+    """
+
+    test_name = result.canonical_name or result.test_name
+
+    parts = [test_name]
+
+    if result.flag:
+        parts.append(result.flag)
+
+    return " ".join(parts)
+
+
+def retrieve_for_result(
+    result: LabResult,
+    persist_directory: str = "data/chroma",
+    n_results: int = 3,
+) -> list[dict]:
+    """
+    Retrieve relevant medical knowledge for a laboratory result.
+    """
+
+    query = build_result_query(result)
+
+    return retrieve_knowledge(
+        query=query,
+        persist_directory=persist_directory,
         n_results=n_results,
     )

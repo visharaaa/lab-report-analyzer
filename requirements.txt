@@ -7,3 +7,4 @@ numpypip
 pymupdf
 pytesseract
 sentence-transformers
+chromadb
