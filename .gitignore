@@ -8,3 +8,4 @@ data/sample_reports/*
 data/evaluation/*
 .DS_Store
 Thumbs.db
+data/chroma/
