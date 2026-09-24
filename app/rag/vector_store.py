@@ -49,11 +49,12 @@ def add_documents(
     ]
 
     metadatas = [
-        {
-            "file_name": chunk["file_name"],
-            "file_path": chunk["file_path"],
-        }
-        for chunk in chunks
+    {
+        "file_name": chunk["file_name"],
+        "file_path": chunk["file_path"],
+        "section": chunk.get("section", "unknown"),
+    }
+    for chunk in chunks
     ]
 
     collection.add(
