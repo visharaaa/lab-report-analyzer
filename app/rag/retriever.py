@@ -17,7 +17,9 @@ def retrieve_knowledge(
     query: str,
     persist_directory: str = "data/chroma",
     n_results: int = 3,
+    where: dict | None = None,
 ) -> list[dict]:
+    
     """
     Retrieve the most relevant knowledge chunks for a query.
     """
@@ -37,6 +39,7 @@ def retrieve_knowledge(
         collection,
         query_embedding,
         n_results=n_results,
+        where=where,
     )
 
 
@@ -47,12 +50,13 @@ def build_result_query(result: LabResult) -> str:
 
     test_name = result.canonical_name or result.test_name
 
-    parts = [test_name]
+    if result.flag in {"low", "high"}:
+        return (
+            f"{test_name} {result.flag} result "
+            f"what it means possible causes important context"
+        )
 
-    if result.flag:
-        parts.append(result.flag)
-
-    return " ".join(parts)
+    return f"{test_name} result interpretation"
 
 
 def retrieve_for_result(

@@ -35,7 +35,10 @@ def test_build_result_query():
 
     query = build_result_query(result)
 
-    assert query == "hemoglobin low"
+    assert query == (
+    "hemoglobin low result "
+    "what it means possible causes important context"
+)
 
 
 def test_retrieve_for_result():

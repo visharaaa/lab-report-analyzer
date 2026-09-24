@@ -68,6 +68,7 @@ def search_documents(
     collection,
     query_embedding,
     n_results: int = 3,
+    where: dict | None = None,
 ) -> list[dict]:
     """
     Search the vector store for the most relevant knowledge chunks.
@@ -76,6 +77,7 @@ def search_documents(
     results = collection.query(
         query_embeddings=[query_embedding.tolist()],
         n_results=n_results,
+        where=where,
     )
 
     documents = results["documents"][0]

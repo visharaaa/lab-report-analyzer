@@ -3,11 +3,12 @@ Utilities for generating embeddings for knowledge-base chunks.
 """
 
 from sentence_transformers import SentenceTransformer
-
+from functools import lru_cache
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
 
+@lru_cache(maxsize=1)
 def load_embedding_model() -> SentenceTransformer:
     """
     Load the pretrained embedding model.
