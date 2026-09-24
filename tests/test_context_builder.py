@@ -81,6 +81,7 @@ def test_build_report_context():
     assert "Result: 11.2 g/dL" in context
     assert "Status: low" in context
     assert "hemoglobin.md" in context
+    assert "Reference range: 12.0 - 15.0" in context
 
     # Normal results should not appear in the context.
     assert "wbc_count" not in context

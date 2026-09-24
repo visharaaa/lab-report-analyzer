@@ -16,9 +16,20 @@ def build_result_context(
 
     test_name = result.canonical_name or result.test_name
 
+    reference_range = "Not provided"
+
+    if (
+        result.reference_low is not None
+        and result.reference_high is not None
+    ):
+        reference_range = (
+            f"{result.reference_low} - {result.reference_high}"
+        )
+
     lines = [
         f"Test: {test_name}",
         f"Result: {result.value} {result.unit or ''}".strip(),
+        f"Reference range: {reference_range}",
         f"Status: {result.flag or 'unknown'}",
         "",
         "Relevant medical information:",
