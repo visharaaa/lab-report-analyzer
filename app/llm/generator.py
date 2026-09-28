@@ -6,6 +6,7 @@ from pathlib import Path
 
 from app.llm.client import generate_explanation
 from app.llm.report_prompt import build_report_prompt
+from app.safety.response_validator import validate_response
 
 
 def generate_report_explanation(
@@ -15,9 +16,7 @@ def generate_report_explanation(
     model: str | None = None,
 ) -> str:
     """
-    Generate an explanation for a laboratory report.
-
-    Builds the report prompts and sends them to the configured LLM.
+    Generate and validate an explanation for a laboratory report.
     """
 
     prompts = build_report_prompt(
@@ -26,8 +25,18 @@ def generate_report_explanation(
         n_results=n_results,
     )
 
-    return generate_explanation(
+    response = generate_explanation(
         system_prompt=prompts["system_prompt"],
         user_prompt=prompts["user_prompt"],
         model=model,
     )
+
+    is_valid, issues = validate_response(response)
+
+    if not is_valid:
+        raise ValueError(
+            "Generated response failed safety validation: "
+            + "; ".join(issues)
+        )
+
+    return response
