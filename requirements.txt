@@ -8,3 +8,5 @@ pymupdf
 pytesseract
 sentence-transformers
 chromadb
+openai
+python-dotenv

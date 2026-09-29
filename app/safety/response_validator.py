@@ -12,6 +12,10 @@ FORBIDDEN_PHRASES = [
     "decrease your dose",
 ]
 
+REQUIRED_SAFETY_PHRASES = [
+    "not a diagnosis",
+]
+
 
 def validate_response(response: str) -> tuple[bool, list[str]]:
     """
@@ -27,6 +31,7 @@ def validate_response(response: str) -> tuple[bool, list[str]]:
 
     if not response.strip():
         issues.append("Response is empty.")
+        return False, issues
 
     response_lower = response.lower()
 
@@ -34,6 +39,12 @@ def validate_response(response: str) -> tuple[bool, list[str]]:
         if phrase in response_lower:
             issues.append(
                 f"Response contains potentially unsafe advice: '{phrase}'."
+            )
+
+    for phrase in REQUIRED_SAFETY_PHRASES:
+        if phrase not in response_lower:
+            issues.append(
+                f"Response is missing required safety statement: '{phrase}'."
             )
 
     return len(issues) == 0, issues

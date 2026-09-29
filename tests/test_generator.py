@@ -10,7 +10,10 @@ def test_generate_report_explanation(monkeypatch):
         assert "Do not diagnose" in system_prompt
         assert "hemoglobin" in user_prompt
 
-        return "This is a safe mock explanation."
+        return (
+            "This is a safe mock explanation. "
+            "This explanation is not a diagnosis."
+        )
 
     monkeypatch.setattr(
         generator,
@@ -24,4 +27,7 @@ def test_generate_report_explanation(monkeypatch):
         n_results=3,
     )
 
-    assert response == "This is a safe mock explanation."
+    assert response == (
+        "This is a safe mock explanation. "
+        "This explanation is not a diagnosis."
+    )
