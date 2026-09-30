@@ -16,6 +16,13 @@ REQUIRED_SAFETY_PHRASES = [
     "not a diagnosis",
 ]
 
+DEFINITIVE_PHRASES = [
+    "you have",
+    "you definitely have",
+    "this means you have",
+    "this confirms that you have",
+]
+
 
 def validate_response(response: str) -> tuple[bool, list[str]]:
     """
@@ -39,6 +46,12 @@ def validate_response(response: str) -> tuple[bool, list[str]]:
         if phrase in response_lower:
             issues.append(
                 f"Response contains potentially unsafe advice: '{phrase}'."
+            )
+
+    for phrase in DEFINITIVE_PHRASES:
+        if phrase in response_lower:
+            issues.append(
+                f"Response contains potentially diagnostic language: '{phrase}'."
             )
 
     for phrase in REQUIRED_SAFETY_PHRASES:

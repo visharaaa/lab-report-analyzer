@@ -46,3 +46,17 @@ def test_missing_safety_statement_is_flagged():
         "missing required safety statement" in issue
         for issue in issues
     )
+
+def test_definitive_diagnosis_is_flagged():
+    response = (
+        "You have anemia based on this result. "
+        "This explanation is not a diagnosis."
+    )
+
+    is_valid, issues = validate_response(response)
+
+    assert is_valid is False
+    assert any(
+        "potentially diagnostic language" in issue
+        for issue in issues
+    )
