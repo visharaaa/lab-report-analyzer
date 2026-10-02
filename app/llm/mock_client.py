@@ -16,5 +16,6 @@ def generate_mock_explanation(
     return (
         "This is a mock laboratory report explanation. "
         "The real LLM will generate the explanation once "
-        "an API provider is configured."
+        "an API provider is configured. "
+        "This explanation is not a diagnosis."
     )
