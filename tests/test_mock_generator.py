@@ -8,5 +8,5 @@ def test_generate_mock_report_explanation():
         n_results=3,
     )
 
-    assert "mock laboratory report explanation" in response
+    assert "Mock laboratory report explanation" in response
     assert "not a diagnosis" in response
